@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Aztech Admin</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background: #deecf9;
+            color: #050232;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #0b54cd;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #deecf9;
+        }
+
+        th {
+            background: #0d4ef7;
+            color: white;
+        }
+
+        .block-btn {
+            background: #050232;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Aztech WiFi Admin Dashboard</h1>
+    <table id="user-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>MAC Address</th>
+                <th>IP Address</th>
+                <th>Date</th>
+                <th>Session Start</th>
+                <th>Session End</th>
+            </tr>
+        </thead>
+        <tbody id="user-body"></tbody>
+    </table>
+
+    <script>
+        async function loadUsers() {
+            const resp = await fetch('/admin');
+            const users = await resp.json();
+            const body = document.getElementById('user-body');
+            body.innerHTML = '';
+            users.forEach(u => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${u.id}</td>
+                    <td>${u.mac_address}</td>
+                    <td>${u.ip_address}</td>
+                    <td>${u.date_used}</td>
+                    <td>${u.session_start}</td>
+                    <td>${u.session_end}</td>
+                `;
+                body.appendChild(tr);
+            });
+        }
+        loadUsers();
+    </script>
+</body>
+
+</html>
